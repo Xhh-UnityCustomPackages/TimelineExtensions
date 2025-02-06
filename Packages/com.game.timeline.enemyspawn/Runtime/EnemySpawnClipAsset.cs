@@ -7,7 +7,7 @@ namespace Game.Timeline
     public enum GenerateType
     {
         //间隔多少秒,一次生成一个
-        Interval
+        Interval,
     }
 
     [Serializable]
@@ -27,5 +27,19 @@ namespace Game.Timeline
         public int spawnID;
 
         public List<GenerateSetting> GenerateSettings = new();
+
+        public int totalCount
+        {
+            get
+            {
+                int _totalCount = 0;
+                foreach (var setting in GenerateSettings)
+                {
+                    _totalCount += setting.count;
+                }
+
+                return _totalCount;
+            }
+        }
     }
 }

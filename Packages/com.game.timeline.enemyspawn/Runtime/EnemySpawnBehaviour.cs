@@ -8,19 +8,18 @@ namespace Game.Timeline
     {
         private List<GenerateFactory> m_Generaters;
 
-        protected EnemySpawnClipAsset clipAsset => GetData<EnemySpawnClipAsset>();
+        public EnemySpawnClipAsset clipAsset => GetData<EnemySpawnClipAsset>();
 
 
         protected override void OnStart(object binding)
         {
             foreach (var generateSetting in clipAsset.GenerateSettings)
             {
-                if (generateSetting.count <= 0)
-                    continue;
+                if (generateSetting.id.Count <= 0) continue;
+                if (generateSetting.count <= 0) continue;
 
                 if (m_Generaters == null) m_Generaters = new();
-                var prefab = EnemySpawnController.S.targets[0].target;
-                m_Generaters.Add(new GenerateFactory_Interval(prefab, clipAsset.spawnID, generateSetting.count, generateSetting.interval));
+                m_Generaters.Add(new GenerateFactory_Interval(generateSetting.id[0], clipAsset.spawnID, generateSetting.count, generateSetting.interval));
             }
 
             if (m_Generaters != null)
@@ -59,18 +58,18 @@ namespace Game.Timeline
 
     public class GenerateFactory_Interval : GenerateFactory
     {
-        private GameObject m_Prefab;
+        private readonly int m_ObjectID;
+        private readonly int m_SpawnID;
         private readonly float m_Interval = 2;
         private readonly int m_MaxCount;
-        private readonly int m_SpawnID;
 
         private int m_GenerateCount;
         private float m_Timer;
 
-        public GenerateFactory_Interval(GameObject prefab, int spawnID, int count, float interval)
+        public GenerateFactory_Interval(int objectID, int spawnID, int count, float interval)
         {
             m_SpawnID = spawnID;
-            m_Prefab = prefab;
+            m_ObjectID = objectID;
             m_MaxCount = count;
             m_Interval = interval;
         }
@@ -89,23 +88,21 @@ namespace Game.Timeline
             if (m_Timer <= 0)
             {
                 m_Timer = m_Interval;
-                Generate(m_Prefab);
+                Generate(m_ObjectID);
                 m_GenerateCount++;
             }
         }
 
 
-        public void Generate(GameObject prefab)
+        public void Generate(int objectID)
         {
-            if (prefab == null) return;
-
             if (EnemySpawnController.S.generate == null)
             {
                 Debug.LogError("Not Set EnemyGenerateController Generate Method");
                 return;
             }
 
-            EnemySpawnController.S.generate.Invoke(prefab, m_SpawnID);
+            EnemySpawnController.S.generate.Invoke(objectID, m_SpawnID);
         }
     }
 }

@@ -15,13 +15,20 @@ namespace Game.Timeline.Editor
                 var title = $"SpawnID:{changeNameClass.spawnID}\n";
                 var maxDuration = 0f;
 
+
                 foreach (var generateSetting in changeNameClass.GenerateSettings)
                 {
-                    var str = $"Num:{generateSetting.count} Interval:{generateSetting.interval}";
+                    string idStr = "";
+                    foreach (var id in generateSetting.id)
+                    {
+                        idStr += id + ", ";
+                    }
+
+                    var str = $"ID:{idStr} Num:{generateSetting.count} Interval:{generateSetting.interval}";
                     title += str;
                     title += "\n";
 
-                    var duration = generateSetting.count * generateSetting.interval;
+                    var duration = (generateSetting.count + 1) * generateSetting.interval;
                     maxDuration = Mathf.Max(maxDuration, duration);
                 }
 

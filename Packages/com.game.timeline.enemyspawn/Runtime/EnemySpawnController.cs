@@ -22,17 +22,8 @@ namespace Game.Timeline
             }
         }
 
-        public delegate GameObject Generate(GameObject prefab, int spawnID);
+        public delegate void Generate(int objectID, int spawnID);
 
         public Generate generate = null;
-
-        private List<GenerateTarget> m_Targets = new List<GenerateTarget>();
-        public List<GenerateTarget> targets => m_Targets;
-
-        //填充运行时targets数据
-        public void Init(GenerateTargetSO targetso)
-        {
-            targets.AddRange(targetso.Targets);
-        }
     }
 }

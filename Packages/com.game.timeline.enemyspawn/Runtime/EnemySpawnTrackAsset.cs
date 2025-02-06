@@ -8,6 +8,5 @@ namespace Game.Timeline
     [TrackClipType(typeof(EnemySpawnClipAsset))]
     public class EnemySpawnTrackAsset : BaseTrackAsset
     {
-        public int spawnID = 0;
     }
 }
