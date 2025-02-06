@@ -1,0 +1,7 @@
+{
+  "name": "com.game.tools.timeline.enemyspawn",
+  "displayName": "Game_Tools_Timeline_EnemySpawn",
+  "version": "1.0.2",
+  "unity": "2023.1",
+  "icon": ".icon.png"
+}
