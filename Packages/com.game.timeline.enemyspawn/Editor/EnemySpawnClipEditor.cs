@@ -24,11 +24,29 @@ namespace Game.Timeline.Editor
                         idStr += id + ", ";
                     }
 
-                    var str = $"ID:{idStr} Num:{generateSetting.count} Interval:{generateSetting.interval}";
+                    int count = 0;
+
+                    if (generateSetting.generateType == GenerateSetting.GenerateType.Interval)
+                    {
+                        count = generateSetting.count;
+                    }
+                    else if (generateSetting.generateType == GenerateSetting.GenerateType.Formation)
+                    {
+                        if (generateSetting.formationConfig == null)
+                        {
+                            count = 0;
+                        }
+                        else
+                        {
+                            count = generateSetting.formationConfig.customPositions.Count;
+                        }
+                    }
+
+                    var str = $"ID:{idStr} Num:{count} Interval:{generateSetting.interval}";
                     title += str;
                     title += "\n";
 
-                    var duration = (generateSetting.count + 1) * generateSetting.interval;
+                    var duration = GetDuration(generateSetting);
                     maxDuration = Mathf.Max(maxDuration, duration);
                 }
 
@@ -37,6 +55,31 @@ namespace Game.Timeline.Editor
                 maxDuration = Mathf.Max(1.0f, maxDuration);
                 clip.duration = maxDuration;
             }
+        }
+
+        public float GetDuration(GenerateSetting generateSetting)
+        {
+            if (generateSetting.generateType == GenerateSetting.GenerateType.Interval)
+            {
+                var duration = (generateSetting.count + 1) * generateSetting.interval;
+                return duration;
+            }
+            else if (generateSetting.generateType == GenerateSetting.GenerateType.Formation)
+            {
+                if (generateSetting.interval <= 0)
+                {
+                    return 1f;
+                }
+                else
+                {
+                    if (generateSetting.formationConfig == null)
+                        return 1f;
+                    else
+                        return (generateSetting.formationConfig.customPositions.Count + 1) * generateSetting.interval;
+                }
+            }
+
+            return 1f;
         }
     }
 }

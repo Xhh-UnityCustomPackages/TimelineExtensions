@@ -22,7 +22,7 @@ namespace Game.Timeline
             }
         }
 
-        public delegate void Generate(int objectID, int spawnID);
+        public delegate void Generate(int objectID, int spawnID, Vector3 offset);
 
         public Generate generate = null;
     }

@@ -4,20 +4,23 @@ using UnityEngine;
 
 namespace Game.Timeline
 {
-    public enum GenerateType
-    {
-        //间隔多少秒,一次生成一个
-        Interval,
-    }
-
     [Serializable]
     public class GenerateSetting
     {
+        public enum GenerateType
+        {
+            //间隔多少秒,一次生成一个
+            Interval,
+            Formation,
+        }
+
         public List<int> id = new() { 0 };
 
-        // public GenerateType generateType = GenerateType.Interval;
+        public GenerateType generateType = GenerateType.Interval;
         [InspectorName("数量")] public int count = 10;
-        [InspectorName("间隔")] public float interval = 0.2f;
+        [InspectorName("间隔")] [Min(0f)] public float interval = 0.2f;
+
+        [InspectorName("阵型")] public FormationConfig formationConfig = null;
     }
 
 
