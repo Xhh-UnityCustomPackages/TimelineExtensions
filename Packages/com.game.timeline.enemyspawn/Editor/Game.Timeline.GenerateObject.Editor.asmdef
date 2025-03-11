@@ -1,20 +1,22 @@
 {
-    "name": "Game.Timeline.GenerateObject.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:ca36d684f3730634f95208dd748f2bba",
-        "GUID:02f771204943f4a40949438e873e3eff",
-        "GUID:f06555f75b070af458a003d92f9efb00"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Game.Timeline.GenerateObject.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:ca36d684f3730634f95208dd748f2bba",
+    "GUID:02f771204943f4a40949438e873e3eff",
+    "GUID:f06555f75b070af458a003d92f9efb00",
+    "GUID:82050e0d894577b4983169d384bf46ea",
+    "Game.Timeline.Base.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

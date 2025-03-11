@@ -38,7 +38,10 @@ namespace Game.Timeline
                 int _totalCount = 0;
                 foreach (var setting in GenerateSettings)
                 {
-                    _totalCount += setting.count;
+                    if (setting.generateType == GenerateSetting.GenerateType.Interval)
+                        _totalCount += setting.count;
+                    else if (setting.generateType == GenerateSetting.GenerateType.Formation)
+                        _totalCount += setting.formationConfig.customPositions.Count;
                 }
 
                 return _totalCount;

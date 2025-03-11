@@ -54,24 +54,30 @@ namespace Game.Timeline.Editor
         {
             EditorGUI.BeginChangeCheck();
 
-
             // 配置选择区域
             currentConfig = EditorGUILayout.ObjectField("当前阵型配置", currentConfig, typeof(FormationConfig), false) as FormationConfig;
-
             spawnRoot = EditorGUILayout.ObjectField("当前出怪点", spawnRoot, typeof(Transform), true) as Transform;
 
             if (currentConfig == null) return;
 
             // 工具栏
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-            // if (GUILayout.Button("生成默认网格", EditorStyles.toolbarButton))
-            // {
-            //     // GenerateGridFormation();
-            // }
-
             snapToGrid = GUILayout.Toggle(snapToGrid, "网格吸附", EditorStyles.toolbarButton);
             gridSize = EditorGUILayout.FloatField(gridSize);
             EditorGUILayout.EndHorizontal();
+
+            // 添加旋转控制
+            if (spawnRoot != null)
+            {
+                EditorGUI.BeginChangeCheck();
+                Quaternion rotation = Quaternion.Euler(spawnRoot.eulerAngles);
+                Vector3 euler = EditorGUILayout.Vector3Field("阵型旋转", rotation.eulerAngles);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(spawnRoot, "Rotate Formation");
+                    spawnRoot.rotation = Quaternion.Euler(euler);
+                }
+            }
 
             // 可视化编辑区域
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.ExpandHeight(true));
@@ -126,23 +132,28 @@ namespace Game.Timeline.Editor
 
         void OnSceneGUI(SceneView sceneView)
         {
-            if (currentConfig == null) return;
-            if (spawnRoot == null) return;
+            if (currentConfig == null || spawnRoot == null) return;
 
-            Handles.SphereHandleCap(0, spawnRoot.position, Quaternion.identity, 1.1f, EventType.Repaint);
+            Handles.SphereHandleCap(0, spawnRoot.position, spawnRoot.rotation, 1.1f, EventType.Repaint);
 
             Handles.color = Color.cyan;
             for (int i = 0; i < currentConfig.customPositions.Count; i++)
             {
                 EditorGUI.BeginChangeCheck();
+
+                // 计算旋转后的位置
+                Vector3 rotatedPos = spawnRoot.position + spawnRoot.rotation * currentConfig.customPositions[i];
+
                 Vector3 newPos = Handles.PositionHandle(
-                    currentConfig.customPositions[i] + spawnRoot.position,
-                    Quaternion.identity
+                    rotatedPos,
+                    spawnRoot.rotation  // 使用spawnRoot的旋转
                 );
 
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(currentConfig, "Move Formation Point");
+
+                    // 反向计算局部坐标
                     if (snapToGrid)
                     {
                         newPos = new Vector3(
@@ -152,7 +163,8 @@ namespace Game.Timeline.Editor
                         );
                     }
 
-                    currentConfig.customPositions[i] = newPos - spawnRoot.position;
+                    // 将世界坐标转换回相对坐标
+                    currentConfig.customPositions[i] = Quaternion.Inverse(spawnRoot.rotation) * (newPos - spawnRoot.position);
                 }
 
                 Handles.color = Color.red;

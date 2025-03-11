@@ -12,6 +12,7 @@ namespace Game.Timeline
         private Playable _playable = Playable.Null;
         private PlayableAsset _asset;
 
+
         public static Playable CreatePlayable<T>(PlayableGraph graph, PlayableAsset data) where T : BaseBehaviour, new()
         {
             var playable = ScriptPlayable<T>.Create(graph);
@@ -32,7 +33,7 @@ namespace Game.Timeline
 
         #region base
 
-        protected virtual void OnCreate()
+        protected virtual void OnCreate(Playable playable)
         {
         }
 
@@ -74,7 +75,7 @@ namespace Game.Timeline
 
         public sealed override void OnPlayableCreate(Playable playable)
         {
-            OnCreate();
+            OnCreate(playable);
         }
 
         public sealed override void OnPlayableDestroy(Playable playable)
