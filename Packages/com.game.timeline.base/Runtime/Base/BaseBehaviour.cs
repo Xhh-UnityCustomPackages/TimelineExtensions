@@ -110,7 +110,7 @@ namespace Game.Timeline
                 OnStart(_playerData);
             }
 
-            OnUpdate(_playerData, info.deltaTime);
+            OnUpdate(_playerData, info.deltaTime * UnityEngine.Time.timeScale);
         }
 
         #endregion sealed

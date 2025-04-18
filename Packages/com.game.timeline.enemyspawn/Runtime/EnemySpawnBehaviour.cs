@@ -96,22 +96,23 @@ namespace Game.Timeline
             m_ObjectID = objectID;
             m_MaxCount = count;
             m_Interval = interval;
+            m_Timer = 0;
         }
 
         public override void OnStart()
         {
-            m_Timer = m_Interval;
+            m_Timer = 0;
             m_GenerateCount = 0;
         }
 
         public override void OnUpdate(float deltaTime)
         {
-            if (m_GenerateCount > m_MaxCount) return;
+            if (m_GenerateCount >= m_MaxCount) return;
 
             m_Timer -= deltaTime;
             if (m_Timer <= 0)
             {
-                m_Timer = m_Interval;
+                m_Timer += m_Interval;
                 Generate(m_ObjectID, Vector3.zero);
                 m_GenerateCount++;
             }

@@ -17,7 +17,7 @@ namespace Game.Timeline
         public List<int> id = new() { 0 };
 
         public GenerateType generateType = GenerateType.Interval;
-        [InspectorName("数量")] public int count = 10;
+        [InspectorName("数量"), Min(1)] public int count = 10;
         [InspectorName("间隔")] [Min(0f)] public float interval = 0.2f;
 
         [InspectorName("阵型")] public FormationConfig formationConfig = null;
