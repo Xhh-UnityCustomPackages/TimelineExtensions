@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -54,6 +55,7 @@ namespace Game.Timeline.Editor
 
                 maxDuration = Mathf.Max(1.0f, maxDuration);
                 clip.duration = maxDuration;
+                EditorUtility.SetDirty(clip.asset);
             }
         }
 

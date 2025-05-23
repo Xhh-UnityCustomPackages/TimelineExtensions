@@ -162,7 +162,7 @@ namespace Game.Timeline
                 m_Timer -= deltaTime;
                 if (m_Timer <= 0)
                 {
-                    m_Timer = m_Interval;
+                    m_Timer += m_Interval;
                     Generate(m_ObjectID, m_FormationConfig.customPositions[m_GenerateCount]);
                     m_GenerateCount++;
                 }
